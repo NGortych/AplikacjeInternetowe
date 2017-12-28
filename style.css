@@ -1,0 +1,159 @@
+body
+{
+    background-color: #CBDBD7;
+    color: #FCFFF5;
+    font-size: 17px;
+
+}
+h1
+{
+    font-size: 70px;
+    letter-spacing: 1px;
+
+}
+
+a
+{
+    color: #FCFFF5;
+}
+
+a:hover
+{
+    color: #CBDBD7;
+}
+
+select{
+    max-width: 300px;
+    color: #FCFFF5;
+    font-size: 17px;
+}
+
+@media only screen and (min-width: 160px){
+    h1{font-size:40px}
+}
+
+@media only screen and (min-width: 480px){
+    h1{font-size:60px;}
+}
+
+@media only screen and (min-width: 768px){
+    h1{font-size:70px;}
+}
+
+
+#container
+{
+    background-color: #91AAB4;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 15px;
+    
+}
+
+#main_page{
+    align-content: center;
+    text-align: center;
+    
+}
+
+#reg_form
+{
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 480px;
+    float: left;
+}
+
+#reg_image
+{
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 480px;
+    float: left;
+}
+
+#logo
+{
+
+    text-align: center;
+    letter-spacing: 1px;
+    padding: 10px 0px 2px 0px;
+}
+
+#menu
+{
+    background-color: #193441;
+    padding: 10px;
+    margin: 10px 0px;
+
+}
+
+.error
+{
+    border: solid red;
+    color:red;
+    margin-bottom: 5px;
+    min-width: 100px;
+    max-width: 300px;
+    border-radius: 20px;
+    text-align: center;
+    background-color: #FFE2E5;
+}
+
+.reg_fields
+{   
+    padding: 5px 0px;
+}
+
+.button
+{
+    height: 50px;
+    border: solid #193441;
+    border-radius: 15px;
+    letter-spacing: 1px;
+    color: #193441;
+
+
+
+}
+
+.button:hover
+{
+    color: #CBDBD7;
+    background-color: #193441;
+    cursor: pointer;
+}
+
+.option
+{
+    float: left;
+    min-width: 50px;
+    padding: 10px;
+    border-right: 2px dotted #91AAB4;
+
+
+}
+
+.option:hover
+{
+    background-color: #3E606F;
+    cursor: pointer;
+}
+
+.upload_button
+{
+    border: solid #193441;
+    border-radius: 0px;
+    letter-spacing: 1px;
+    color: #193441;
+    cursor: pointer;
+    background-color: #dddddd;
+}
+
+.upload_button:hover
+{
+    color: #CBDBD7;
+    background-color: #193441;
+    cursor: pointer;
+}

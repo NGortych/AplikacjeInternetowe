@@ -99,7 +99,34 @@ if (isset($_POST['email_reg'])) {
         $_SESSION['error_captcha'] = "Potwierdź, że nie jesteś botem.";
     }
 
-    //
+    $imgFile = $_FILES['user_image']['name'];
+    $tmp_dir = $_FILES['user_image']['tmp_name'];
+    $imgSize = $_FILES['user_image']['size'];
+    $userpic = "brak-zdjecia.jpg";
+
+
+    if (!empty($imgFile)) {
+        $upload_dir = 'user_images/';
+
+        $imgExt = strtolower(pathinfo($imgFile, PATHINFO_EXTENSION));
+        $valid_extensions = array('jpeg', 'jpg', 'png', 'gif');
+        
+        $userpic = rand(1000, 1000000) . "." . $imgExt;
+
+
+        if (in_array($imgExt, $valid_extensions)) {
+            if ($imgSize < 5000000) {
+                move_uploaded_file($tmp_dir, $upload_dir . $userpic);
+            } else {
+                $successful_validation = false;
+                $_SESSION['error_image'] = "Plik jest za duży!";
+            }
+        } else {
+            $successful_validation = false;
+            $_SESSION['error_image'] = "Niedozwolony format pliku!";
+        }
+    }
+
     require_once 'connect.php';
     $connect = @new mysqli($host, $db_user, $db_password, $db_name);
 
@@ -121,7 +148,7 @@ if (isset($_POST['email_reg'])) {
                                            <a href=\"http://localhost/test/index.php?active=" . $actCode . "\"> http://localhost/test/index.php?active=" . $actCode . " </a><br>
                                                 ";
                 mail($email, "Link Aktywacyjny", $content, $headers);
-                if ($connect->query("INSERT INTO `user`(`id`, `email`, `password`, `name`, `surname`, `type`, `indexNM`, `id_study`, `id_department`,`activation_key`, `active`) VALUES(NULL,'$email','$passwordHash','$name','$surname','$type',NULL,'$study',NULL,'$actCode',0)"))
+                if ($connect->query("INSERT INTO `user`(`id`, `email`, `password`, `name`, `surname`, `type`, `indexNM`, `id_study`, `id_department`,`activation_key`, `active`, `image`) VALUES(NULL,'$email','$passwordHash','$name','$surname','$type',NULL,'$study',NULL,'$actCode',0, '$userpic')"))
                     echo "Zostałeś zarejestrowany. Na twój e-mail została wysłana wiadomość z kodem aktywayjnym.";
                 else
                     echo "REJESTRACJA NIE POWIODŁĄ SIĘ." . $connect->error;
@@ -133,7 +160,7 @@ if (isset($_POST['email_reg'])) {
                                            <a href=\"http://localhost/test/index.php?active=" . $actCode . "\"> http://localhost/test/index.php?active=" . $actCode . " </a><br>
                                                 ";
                 mail($email, "Link Aktywacyjny", $content, $headers);
-                if ($connect->query("INSERT INTO `user`(`id`, `email`, `password`, `name`, `surname`, `type`, `indexNM`, `id_study`, `id_department`,`activation_key`, `active`) VALUES(NULL,'$email','$passwordHash','$name','$surname','$type',NULL,NULL,$department,'$actCode',0)"))
+                if ($connect->query("INSERT INTO `user`(`id`, `email`, `password`, `name`, `surname`, `type`, `indexNM`, `id_study`, `id_department`,`activation_key`, `active`, `image`) VALUES(NULL,'$email','$passwordHash','$name','$surname','$type',NULL,NULL,$department,'$actCode',0,'$userpic')"))
                     echo "Zostałeś zarejestrowany. Na twój e-mail została wysłana wiadomość z kodem aktywayjnym.";
                 else
                     echo "REJESTRACJA NIE POWIODŁĄ SIĘ." . $connect->error;
@@ -151,138 +178,181 @@ if (isset($_POST['email_reg'])) {
         <meta http-equiv="X-UA-Compatible" content="IE = edge, chrome = 1"/>
         <title>Rejestracja</title>
         <script src='https://www.google.com/recaptcha/api.js'></script>
-        <style>
-            .error
-            {
-                color:red;
-                margin-top: 10px;           
-                margin-bottom: 10px;                    
-            }
-        </style>
+        <link href="css/bootstrap.min.css" rel="stylesheet" >
+        <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="js.js"></script>
+        <link href="style.css" rel="stylesheet">
+
     </head>
     <body>
-        <form method="post">
-            <br/>
 
-            E-mail: <br/> <input type="text" name="email_reg" /> <br/>
+        <div id="container">
 
-            <?php
-            if (isset($_SESSION['error_email'])) {
-                echo '<div class="error">' . $_SESSION['error_email'] . '</div>';
-                unset($_SESSION['error_email']);
-            }
-            ?>
+            <div id="logo">
 
-            Hasło: </br> <input type="password" name="password1_registration"/><br/>
+                <h1>REJESTRACJA</h1>
 
-            <?php
-            if (isset($_SESSION['error_password'])) {
-                echo '<div class="error">' . $_SESSION['error_password'] . '</div>';
-                unset($_SESSION['error_password']);
-            }
-            ?>
-
-            Powtórz hasło: <br/> <input type="password" name="password2_registration"/><br/>
-
-            Imię: <br/> <input type="text" name="name_registration" /> <br/>
-            <?php
-            if (isset($_SESSION['error_name'])) {
-                echo '<div class="error">' . $_SESSION['error_name'] . '</div>';
-                unset($_SESSION['error_name']);
-            }
-            ?>
-
-            Nazwisko: <br/> <input type="text" name="surname_registration" /> <br/>
-            <?php
-            if (isset($_SESSION['error_surname'])) {
-                echo '<div class="error">' . $_SESSION['error_surname'] . '</div>';
-                unset($_SESSION['error_surname']);
-            }
-            ?>
-
-            Typ: <br/> 
-
-            <select name="type_registration">
-                <option>Student</option>
-                <option>Nauczyciel</option>
-            </select>
-            <br/>
-            Numer indeksu:<br/> <input type="text" name="indexNM_registration" /> <br/>
-            <?php
-            if (isset($_SESSION['error_indexNM'])) {
-                echo '<div class="error">' . $_SESSION['error_indexNM'] . '</div>';
-                unset($_SESSION['error_indexNM']);
-            }
-            ?>
-
-            <br/>Kierunek studiów:
-            <br/>
-            <?php
-            require_once 'connect.php';
-            $connect = @new mysqli($host, $db_user, $db_password, $db_name);
-
-            if ($connect->connect_errno != 0) {
-                echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
-            } else {
-                $result = $connect->query("SELECT * FROM study");
-                echo '<select name="study_db">';
-                echo '<option value=""> Kierunek studiów </option>';
-                while ($row = $result->fetch_assoc()) {
-                    echo '<option value="' . $row['id_study'] . '">' . $row['name'] . '</option>';
-                }
-                echo '</select>';
-                $result->free_result();
-                if (isset($_SESSION['error_study'])) {
-                    echo '<div class="error">' . $_SESSION['error_study'] . '</div>';
-                    unset($_SESSION['error_study']);
-                }
-            }
-            ?>
-
-            <?php
-            if ($connect->connect_errno != 0) {
-                echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
-            } else {
-                $result = $connect->query("SELECT * FROM department");
-                echo "<br/><br/>Wydział: <br/>";
-                echo '<select name="department_db">';
-                echo '<option value=""> Wydział </option>';
-                while ($row = $result->fetch_assoc()) {
-                    echo '<option value="' . $row['id_department'] . '">' . $row['name'] . '</option>';
-                }
-                echo '</select><br/>';
-                $result->free_result();
-                if (isset($_SESSION['error_department'])) {
-                    echo '<div class="error">' . $_SESSION['error_department'] . '</div>';
-                    unset($_SESSION['error_department']);
-                }
-            }
-            ?>
-
-            </br>
-            <label>
-                <input type="checkbox" name="reulations"/> Akceptuje regulamin
-            </label>
-
-            <?php
-            if (isset($_SESSION['error_reulations'])) {
-                echo '<div class="error">' . $_SESSION['error_reulations'] . '</div>';
-                unset($_SESSION['error_reulations']);
-            }
-            ?>
-            <br/>
-            <div class="g-recaptcha" data-sitekey="6Ld3YjoUAAAAAMlA7-JvXqp2ulkBPAucq5oMvvE5"></div>
-            <?php
-            if (isset($_SESSION['error_captcha'])) {
-                echo '<div class="error">' . $_SESSION['error_captcha'] . '</div>';
-                unset($_SESSION['error_captcha']);
-            }
-            ?>
-            </br>
-            <input type="submit" value="Zarejestruj się"/>
+            </div>
 
 
-        </form>
+            <div id="menu">
+                <a href="index.php"><div class="option"> STRONA GŁÓWNA </div></a>
+                <div style="clear:both;"></div>
+            </div>
+
+            <div>
+                <form method="post" enctype="multipart/form-data" >
+                    <div id="reg_form">
+
+
+
+                        <div class=" reg_fields">E-mail: <br/> <input type="text" name="email_reg" />  </div>
+
+                        <?php
+                        if (isset($_SESSION['error_email'])) {
+                            echo '<div class=" error">' . $_SESSION['error_email'] . '</div>';
+                            unset($_SESSION['error_email']);
+                        }
+                        ?>
+
+                        <div class="reg_fields">Hasło: </br> <input type="password" name="password1_registration"/></div>
+
+                        <?php
+                        if (isset($_SESSION['error_password'])) {
+                            echo '<div class="error">' . $_SESSION['error_password'] . '</div>';
+                            unset($_SESSION['error_password']);
+                        }
+                        ?>
+
+                        <div class="reg_fields">Powtórz hasło: <br/> <input type="password" name="password2_registration"/></div>
+
+                        <div class="reg_fields">Imię: <br/> <input type="text" name="name_registration" /> </div>
+                        <?php
+                        if (isset($_SESSION['error_name'])) {
+                            echo '<div class="error">' . $_SESSION['error_name'] . '</div>';
+                            unset($_SESSION['error_name']);
+                        }
+                        ?>
+
+                        <div class="reg_fields">Nazwisko: <br/> <input type="text" name="surname_registration" /> </div>
+                        <?php
+                        if (isset($_SESSION['error_surname'])) {
+                            echo '<div class="error">' . $_SESSION['error_surname'] . '</div>';
+                            unset($_SESSION['error_surname']);
+                        }
+                        ?>
+
+                        <div class="reg_fields">Typ: <br/>
+
+                            <select id="type_of_user"  class="form-control" name="type_registration" onchange="
+                                    displayFields()">
+                                <option>Student</option>
+                                <option>Nauczyciel</option>
+                            </select>
+                        </div>
+                        <div id="indexNM" class="reg_fields">Numer indeksu:<br/> <input type="text" name="indexNM_registration" /> </div>
+                        <?php
+                        if (isset($_SESSION['error_indexNM'])) {
+                            echo '<div class="error">' . $_SESSION['error_indexNM'] . '</div>';
+                            unset($_SESSION['error_indexNM']);
+                        }
+                        ?>
+
+                        <div id="study" class="reg_fields">Kierunek studiów:
+                            <br/>
+                            <?php
+                            require_once 'connect.php';
+                            $connect = @new mysqli($host, $db_user, $db_password, $db_name);
+
+                            if ($connect->connect_errno != 0) {
+                                echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
+                            } else {
+                                $result = $connect->query("SELECT * FROM study");
+                                echo '<select class="form-control" name="study_db">';
+                                echo '<option value=""> Kierunek studiów </option>';
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' . $row['id_study'] . '">' . $row['name'] . '</option>';
+                                }
+                                echo '</select></div>';
+                                $result->free_result();
+                                if (isset($_SESSION['error_study'])) {
+                                    echo '<div class="error">' . $_SESSION['error_study'] . '</div>';
+                                    unset($_SESSION['error_study']);
+                                }
+                            }
+                            ?>
+
+                            <?php
+                            if ($connect->connect_errno != 0) {
+                                echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
+                            } else {
+                                $result = $connect->query("SELECT * FROM department");
+                                echo '<div id="department" class="reg_fields" style="display:none;">Wydział: <br/>';
+                                echo '<select class="form-control" name="department_db">';
+                                echo '<option value=""> Wydział </option>';
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' . $row['id_department'] . '">' . $row['name'] . '</option>';
+                                }
+                                echo '</select></div>';
+                                $result->free_result();
+                                if (isset($_SESSION['error_department'])) {
+                                    echo '<div class="error">' . $_SESSION['error_department'] . '</div>';
+                                    unset($_SESSION['error_department']);
+                                }
+                            }
+                            ?>
+
+                            <div class="reg_fields">
+                                <label>
+                                    <input type="checkbox" name="reulations"/> Akceptuje regulamin
+                                </label>
+                            </div>
+
+                            <?php
+                            if (isset($_SESSION['error_reulations'])) {
+                                echo '<div class="error">' . $_SESSION['error_reulations'] . '</div>';
+                                unset($_SESSION['error_reulations']);
+                            }
+                            ?>
+
+
+                            <div class="g-recaptcha" data-sitekey="6Ld3YjoUAAAAAMlA7-JvXqp2ulkBPAucq5oMvvE5"></div>
+
+                            <?php
+                            if (isset($_SESSION['error_captcha'])) {
+                                echo '<div class="error">' . $_SESSION['error_captcha'] . '</div>';
+                                unset($_SESSION['error_captcha']);
+                            }
+                            ?>
+                            </br>
+                            <input type="submit" value="Zarejestruj się" class="button"/>
+
+
+
+                        </div>
+                    </div>
+                    <div id="reg_image">
+                        <p>Zdjęcie profilowe (opcjonalnie)</p>
+                        <img id="blah" src="user_images/brak-zdjęcia.jpg" width="300" height="400" />
+                        <br/>
+                        <br/>
+                        <label class="btn upload_button">
+                            Wybierz plik... <input type="file" name="user_image" accept="image/*" onchange="readURL(this);" hidden>
+                        </label>
+                        <?php
+                        if (isset($_SESSION['error_image'])) {
+                            echo '<div class="error">' . $_SESSION['error_image'] . '</div>';
+                            unset($_SESSION['error_image']);
+                        }
+                        ?>
+
+                    </div>
+
+                    <div style="clear:both;"></div>
+                </form>
+
+            </div>
+        </div>
 
 
 

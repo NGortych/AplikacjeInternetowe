@@ -2,9 +2,7 @@
 session_start();
 
 
-
-if((isset($_SESSION['online'])) && ($_SESSION['online']==true))
-{
+if ((isset($_SESSION['online'])) && ($_SESSION['online'] == true)) {
     header('Location: test.php');
     exit();
 }
@@ -25,32 +23,47 @@ if (filter_input(INPUT_GET, 'active')) {
     }
     $connect->close();
 }
-
 ?>
 
 <!DOCTYPE HTML>
 <html lang="pl">
     <head>
         <meta charset="utf-8"/> 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>     
+        <link href="css/bootstrap.min.css" rel="stylesheet" >
+        <link href="style.css" rel="stylesheet">
+
         <title>Logowanie</title>
 
     </head>
     <body>
-        
-        <a href="registration.php"> REJESTRACJA </a>
 
-        <form action="login.php" method="post">
-            Login: <br/> <input type="text" name="login"/><br/>
-            Hasło: <br/> <input type="password" name="password" /><br/> <br/>
-            <input type="submit" value="Zalogujj się" />
+        <div id="container">
+            <div id="main_page">
+                <div id="logo">
 
-        </form>
-        <?php
-        if(isset($_SESSION['error']))
-        echo $_SESSION['error'];
-        ?>   
+                    <h1>STRONA GŁÓWNA</h1>
 
+                </div>
+                <div id="menu">
+                    <a href="registration.php"><div class="option"> REJESTRACJA </div></a>
+                    <div style="clear:both;"></div>
+                </div>
+
+
+                <form action="login.php" method="post">
+                    <div class="reg_fields">Login: <br/> <input type="text" name="login"/><br/></div>
+                    <div class="reg_fields">Hasło: <br/> <input type="password" name="password" /><br/> </div> <br/>
+                    <input type="submit" value="Zaloguj się" class="btn button " />
+
+                </form>
+                <?php
+                if (isset($_SESSION['error']))
+                    echo $_SESSION['error'];
+                unset($_SESSION['error']);
+                ?>   
+            </div>
+        </div>
     </body>
 </html>
 
