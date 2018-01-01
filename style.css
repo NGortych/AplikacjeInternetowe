@@ -3,23 +3,19 @@ body
     background-color: #CBDBD7;
     color: #FCFFF5;
     font-size: 17px;
-
 }
-h1
+
+h1.logo
 {
-    font-size: 70px;
+
     letter-spacing: 1px;
-
+    text-align: center;
+    padding: 10px 0px 10px 0px;
 }
 
-a
+a.header
 {
-    color: #FCFFF5;
-}
-
-a:hover
-{
-    color: #CBDBD7;
+    color: red;
 }
 
 select{
@@ -28,18 +24,84 @@ select{
     font-size: 17px;
 }
 
-@media only screen and (min-width: 160px){
-    h1{font-size:40px}
+textarea.half-screen
+{
+    max-width: 400px;
 }
 
-@media only screen and (min-width: 480px){
-    h1{font-size:60px;}
+@media only screen and (min-width: 160px){
+    h1.logo{font-size:40px}
+    .cell{
+        border: solid #193441;
+        border-bottom: none ;
+    }
+    .cell_first_element
+    {
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border: solid #193441;
+        border-bottom: none ;
+    }
+
+    .cell_last_element
+    {
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border: solid #193441;
+    }
+
+    .menu > li
+    {
+        border: none;
+    }
+}
+
+@media only screen and (min-width: 576px){
+    h1.logo{font-size:60px;}
+
+    .menu > li
+    {
+
+        border-right: 0px dashed #CBDBD7;
+    }
+
 }
 
 @media only screen and (min-width: 768px){
-    h1{font-size:70px;}
-}
+    h1.logo{font-size:70px;}
 
+    .cell{
+        border: solid #193441;
+        border-left: none; 
+    }
+
+    .cell_first_element
+    {
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        border-top-right-radius: 0px;
+        border: solid #193441;
+    }
+
+    .cell_last_element
+    {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 20px;
+        border-top-right-radius: 20px;
+        border: solid #193441;
+        border-left: none;
+    }
+
+    .menu > li
+    {
+        border-right: 1px dashed #CBDBD7;
+    }
+
+    .menu > li:first-child
+    {
+        border-left: 1px dashed #CBDBD7;
+    }
+}
 
 #container
 {
@@ -48,13 +110,13 @@ select{
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 15px;
-    
 }
 
-#main_page{
+#main_page
+{
     align-content: center;
     text-align: center;
-    
+    padding-top: 2px;
 }
 
 #reg_form
@@ -73,20 +135,58 @@ select{
     float: left;
 }
 
-#logo
+#logo_left
 {
-
-    text-align: center;
-    letter-spacing: 1px;
-    padding: 10px 0px 2px 0px;
+    float: left;
+    width: 80%;
 }
 
-#menu
+#logo_right
+{
+    float: left;
+    width: 20%;
+    text-align: right;
+    padding-right: 5px;
+    padding-top: 5px;
+}
+
+#topnav
 {
     background-color: #193441;
-    padding: 10px;
-    margin: 10px 0px;
+    padding: 0px;
+    min-height:  50px;
+    text-align: center;
+}
 
+.menu
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+    line-height: 200%;
+}
+
+.menu > li
+{
+    display: inline-block;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.menu > li:hover
+{
+    background-color: #3E606F;
+}
+
+.menu a
+{
+    color: #FCFFF5;
+    text-decoration: none;
+}
+
+.menu a:hover
+{
+    color: #FCFFF5;
 }
 
 .error
@@ -113,31 +213,12 @@ select{
     border-radius: 15px;
     letter-spacing: 1px;
     color: #193441;
-
-
-
 }
 
 .button:hover
 {
     color: #CBDBD7;
     background-color: #193441;
-    cursor: pointer;
-}
-
-.option
-{
-    float: left;
-    min-width: 50px;
-    padding: 10px;
-    border-right: 2px dotted #91AAB4;
-
-
-}
-
-.option:hover
-{
-    background-color: #3E606F;
     cursor: pointer;
 }
 
@@ -153,6 +234,79 @@ select{
 
 .upload_button:hover
 {
+    color: #CBDBD7;
+    background-color: #193441;
+    cursor: pointer;
+}
+
+.cell
+{
+    text-align: center;
+    padding: 10px;
+    background-color: #CBDBD7;
+    color: #193441;
+}
+
+.cell_first_element
+{
+    text-align: center;
+    padding: 10px;
+    background-color: #193441;
+
+}
+
+.cell_last_element
+{
+    text-align: center;
+    padding: 10px;
+    background-color: #CBDBD7;
+    color: #193441;
+}
+
+#teacher_page
+{
+    padding: 15px 30px;
+}
+
+.table_padding
+{
+    padding-bottom: 5px;
+}
+
+.menu_button
+{
+    background-color: #CBDBD7;
+    color: #193441;
+    border: none;
+    margin: 5px;
+}
+
+#user_image
+{
+    padding:10px;
+    text-align: center;
+}
+
+#user_info
+{
+    padding: 10px;
+    padding-bottom: 25px;
+}
+
+.btn_edit_remove
+{
+    margin: 2px 5px 10px 5px;
+    border: solid #193441;
+    letter-spacing: 1px;
+    color: #193441;
+    min-width: 130px;
+    border-radius: 5px;
+    
+}
+
+.btn_edit_remove:hover
+{
+    
     color: #CBDBD7;
     background-color: #193441;
     cursor: pointer;

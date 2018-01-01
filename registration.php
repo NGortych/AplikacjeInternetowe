@@ -110,7 +110,7 @@ if (isset($_POST['email_reg'])) {
 
         $imgExt = strtolower(pathinfo($imgFile, PATHINFO_EXTENSION));
         $valid_extensions = array('jpeg', 'jpg', 'png', 'gif');
-        
+
         $userpic = rand(1000, 1000000) . "." . $imgExt;
 
 
@@ -182,29 +182,38 @@ if (isset($_POST['email_reg'])) {
         <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script src="js.js"></script>
         <link href="style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
 
     </head>
     <body>
 
         <div id="container">
 
-            <div id="logo">
+            <header>
 
-                <h1>REJESTRACJA</h1>
+                <h1 class="logo">REJESTRACJA</h1>    
 
-            </div>
+                <nav class="navbar navbar-toggleable-sm navbar-light bg-faded" id="topnav">
 
+                    <button class="navbar-toggler navbar-toggler-right menu_button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-            <div id="menu">
-                <a href="index.php"><div class="option"> STRONA GŁÓWNA </div></a>
-                <div style="clear:both;"></div>
-            </div>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto menu">
+                            <li class="nav-item">
+                                <a href="index.php">STRONA GŁÓWNA</a>
+                            </li>                            
+                        </ul>
+                    </div>
+                </nav>
+
+            </header>
 
             <div>
                 <form method="post" enctype="multipart/form-data" >
                     <div id="reg_form">
-
-
 
                         <div class=" reg_fields">E-mail: <br/> <input type="text" name="email_reg" />  </div>
 
@@ -350,12 +359,8 @@ if (isset($_POST['email_reg'])) {
 
                     <div style="clear:both;"></div>
                 </form>
-
             </div>
         </div>
-
-
-
     </body>
 </html>
 

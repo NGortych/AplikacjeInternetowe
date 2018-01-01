@@ -22,7 +22,6 @@ if (isset($_POST['title'])) {
         $successful_validation = false;
         $_SESSION['error_description'] = "Opis zbyt długi. Maksymalnie 500 znaków!!!";
     }
-
     //kierunek
     $study = $_POST['study'];
     if ($study == "") {
@@ -38,14 +37,34 @@ if (isset($_POST['title'])) {
             echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
         } else {
             $id = $_SESSION['id'];
-            if ($connect->query("INSERT INTO `thesis`(`id_thesis`, `title`, `description`, `status`, `id_student`, `id_teacher`, `id_study`) VALUES (NULL,'$title','$description',0,NULL,'$id',$study)")) {
-                echo "Praca dyplomowa została dodana.";
+            if ($connect->query("UPDATE `thesis` SET `title`='$title',`description`='$description', `id_study`='$study' WHERE id_thesis='$_GET[edit]'")) {
+                echo "Praca dyplomowa została edytowana.";
                 header('Location: myThesis.php');
                 exit();
             } else
-                echo "BLĄD PODCZAS DODAWANIA PRACY DO BAZY DANYCH !!!" . $connect->error;
+                echo "BLĄD PODCZAS EDYTOWANIA PRACY DO BAZY DANYCH !!!" . $connect->error;
         }
     }
+}
+
+if (filter_input(INPUT_GET, 'edit')) {
+    require_once '../connect.php';
+    $connect = @new mysqli($host, $db_user, $db_password, $db_name);
+    if ($connect->connect_errno != 0) {
+        echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
+    } elseif (1) {
+        if ($result = $connect->query("SELECT * FROM `thesis` WHERE id_thesis='$_GET[edit]' ")) {
+            $row = $result->fetch_assoc();
+            $title = $row['title'];
+            $description = $row['description'];
+            $id_study_edit = $row['id_study'];
+        } else {
+            echo "Błąd połączenia z bazą danych.";
+        }
+    } else {
+        echo "Nie można wykonać tej czynności.";
+    }
+    $connect->close();
 }
 ?>
 <!DOCTYPE HTML>
@@ -95,14 +114,14 @@ if (isset($_POST['title'])) {
             <div>
                 <form method="post" > 
                     <div id="teacher_page">
-                        <div class=" reg_fields">Tytuł pracy: <br/> <textarea name="title" class="form-control half-screen" cols="10" rows="2" ></textarea> </div>
+                        <div class=" reg_fields">Tytuł pracy: <br/> <textarea name="title" class="form-control half-screen" cols="10" rows="2" ><?php echo $title; ?></textarea> </div>
                         <?php
                         if (isset($_SESSION['error_title'])) {
                             echo '<div class="error">' . $_SESSION['error_title'] . '</div>';
                             unset($_SESSION['error_title']);
                         }
                         ?>
-                        <div class=" reg_fields">Opis: <br/> <textarea name="description" class="form-control" rows="5" maxlength="500"></textarea>
+                        <div class=" reg_fields">Opis: <br/> <textarea name="description" class="form-control" rows="5" maxlength="500"><?php echo $description; ?></textarea>
                         </div>
                         <?php
                         if (isset($_SESSION['error_description'])) {
@@ -119,14 +138,19 @@ if (isset($_POST['title'])) {
                                 echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
                             } else {
                                 $id_department = $_SESSION['department_id'];
+                                //   $result = $connect->query("SELECT * FROM study WHERE id_study='$id_study'");
+                                //  $row = $result->fetch_assoc();
                                 $result = $connect->query("SELECT * FROM department_study WHERE id_department = '$id_department'");
                                 echo '<select class="form-control" name="study">';
-                                echo '<option value=""> Kierunek </option>';
                                 while ($row = $result->fetch_assoc()) {
                                     $id_study = $row['id_study'];
                                     $result2 = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'");
                                     $row2 = $result2->fetch_assoc();
-                                    echo '<option value="' . $row2['id_study'] . '">' . $row2['name'] . '</option>';
+                                    if ($row2['id_study'] === $id_study_edit) {
+                                        echo '<option selected value="' . $row2['id_study'] . '">' . $row2['name'] . '</option>';
+                                    } else {
+                                        echo '<option value="' . $row2['id_study'] . '">' . $row2['name'] . '</option>';
+                                    }
                                 }
                                 echo '</select>';
                                 $result->free_result();
@@ -141,7 +165,7 @@ if (isset($_POST['title'])) {
                             ?>
                         </div>
                         <br/>
-                        <input type="submit" value="Dodaj pracę" class="button"/>
+                        <input type="submit" value="Zapisz zmiany" class="button"/>
                     </div>
                 </form>
             </div>

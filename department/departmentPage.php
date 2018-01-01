@@ -32,122 +32,158 @@ if (filter_input(INPUT_GET, 'id')) {
     <head>
         <meta charset="utf-8"/> 
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-        <title>Logowanie</title>
+        <title>Strona wydziału</title>
+
+        <link href="../css/bootstrap.min.css" rel="stylesheet" >
+        <link href="../style.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
 
     </head>
     <body>
 
-        <?php
-        if (isset($id)) {
-            echo $row['name'] . '<br/>';
-            echo "Adres: " . $row['address'] . '<br/>';
-            echo "Kierunki realizowane na wydziale: <br/>";
-            if ($result = $connect->query("SELECT * FROM department_study WHERE id_department = '$id'")) {
-                $dep_count = $result->num_rows;
-                if ($dep_count > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        $id_study = $row['id_study'];
-                        $result_study = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'");
-                        $row_study = $result_study->fetch_assoc();
-                        echo " - " . $row_study['name'] . " <br/>";
-                    }
-                } else {
-                    echo "Do wydziału nie maprzyporządkowanych żadnych kierunków nauczania.";
-                }
-            }
-            echo "Skład wydziału: <br/>";
-            if ($result = $connect->query("SELECT * FROM user WHERE id_department = '$id'")) {
-                $user_count = $result->num_rows;
-                if ($user_count > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo " - " . $row['name'] . " " . $row['surname'] . " <br/>";
-                    }
-                } else {
-                    echo "W skład wydziału nie wchodzi żaden nauczyciel.";
-                }
-            }
-            echo "<br/>Prace dyplmowe realizowane na wydziale (niezarezerwowane): </br>";
-            if ($result = $connect->query("SELECT * FROM user WHERE id_department = '$id'")) {
-                if ($user_count > 0) {
-                    while ($row = $result->fetch_assoc()) {
+        <div id="container">
 
-                        $id_teacher = $row['id'];
-                        if ($result_thesis = $connect->query("SELECT * FROM thesis WHERE id_teacher = '$id_teacher' AND status = 0 ")) {
-                            $thesis_count = $result->num_rows;
-                            if ($thesis_count > 0) {
-                                echo "<table cellpadding=\"2\" border=1>";
-                                while ($row_thesis = $result_thesis->fetch_assoc()) {
-                                    echo "<tr>";
-                                    echo "<td>" . $row_thesis['title'] . "</td>";
-                                    echo "<td>" . $row_thesis['description'] . "</td>";
-                                    $id_study = $row_thesis['id_study'];
-                                    if ($result_study = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'")) {
-                                        $row_study = $result_study->fetch_assoc();
-                                        echo "<td>" . $row_study['name'] . "</td>";
-                                    } else {
-                                        echo "BLAD BAZY DANYCH.";
-                                    }
-                                    echo "</tr>";
-                                }
-                                echo "</table>";
-                            } else {
-                                echo "Brak prac dyplomowych";
+            <header>
+
+                <div id="logo_left">
+                    <h1 class="logo"> <?php echo $row['name'] ?></h1>
+                </div>
+                <div id="logo_right">
+                    <?php
+                    echo $_SESSION['name'] . ' ' . $_SESSION['surname'] . "<br/>";
+                    echo $_SESSION['type'];
+                    ?>
+                    <br/>
+                    <a class="header" href="../logout.php">Wyloguj sie!</a>
+
+                </div>
+                <div style="clear:both;"></div>
+                <nav class="navbar navbar-toggleable-sm navbar-light bg-faded" id="topnav">
+
+                    <button class="navbar-toggler navbar-toggler-right menu_button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto menu">
+                            <li class="nav-item"><a href="../teacher/myThesis.php">STRONA GŁÓWNA</a></li>
+                            <li class="nav-item"><a href="../teacher/addThesis.php">DODAJ PRACE</a></li>
+                            <li class="nav-item"><a href="#">WYDZIAŁ</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <div id="teacher_page">
+                <?php
+                if (isset($id)) {
+                    echo "<strong>Adres:</strong> " . $row['address'] . '<br/>';
+                    echo "<strong>Kierunki realizowane na wydziale: </strong> <br/>";
+                    if ($result = $connect->query("SELECT * FROM department_study WHERE id_department = '$id'")) {
+                        $dep_count = $result->num_rows;
+                        if ($dep_count > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $id_study = $row['id_study'];
+                                $result_study = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'");
+                                $row_study = $result_study->fetch_assoc();
+                                echo " - " . $row_study['name'] . " <br/>";
                             }
+                        } else {
+                            echo "Do wydziału nie maprzyporządkowanych żadnych kierunków nauczania.";
                         }
                     }
-                } else {
-                    echo "Brak prac dyplmowych.";
-                }
-            }
+                    echo "<strong>Skład wydziału: </strong><br/>";
+                    if ($result = $connect->query("SELECT * FROM user WHERE id_department = '$id'")) {
+                        $user_count = $result->num_rows;
+                        if ($user_count > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo " - " . $row['name'] . " " . $row['surname'] . " <br/>";
+                            }
+                        } else {
+                            echo "W skład wydziału nie wchodzi żaden nauczyciel.";
+                        }
+                    }
+                    echo "<br/>Prace dyplmowe realizowane na wydziale (niezarezerwowane): </br>";
+                    if ($result = $connect->query("SELECT * FROM user WHERE id_department = '$id'")) {
+                        if ($user_count > 0) {
+                            while ($row = $result->fetch_assoc()) {
 
-            echo "<br/>Prace dyplmowe realizowane na wydziale (zarezerwowane): </br>";
-            if ($result = $connect->query("SELECT * FROM user WHERE id_department = '$id'")) {
-                if ($user_count > 0) {
-                    while ($row = $result->fetch_assoc()) {
+                                $id_teacher = $row['id'];
+                                if ($result_thesis = $connect->query("SELECT * FROM thesis WHERE id_teacher = '$id_teacher' AND status = 0 ")) {
+                                    $thesis_count = $result->num_rows;
+                                    if ($thesis_count > 0) {
 
-                        $id_teacher = $row['id'];
-                        if ($result_thesis = $connect->query("SELECT * FROM thesis WHERE id_teacher = '$id_teacher' AND status = 1 ")) {
-                            $thesis_count = $result->num_rows;
-                            if ($thesis_count > 0) {
-                                echo "<table cellpadding=\"2\" border=1>";
-                                while ($row_thesis = $result_thesis->fetch_assoc()) {
-                                    echo "<tr>";
-                                    echo "<td>" . $row_thesis['title'] . "</td>";
-                                    echo "<td>" . $row_thesis['description'] . "</td>";
-                                    $id_study = $row_thesis['id_study'];
-                                    if ($result_study = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'")) {
-                                        $row_study = $result_study->fetch_assoc();
-                                        echo "<td>" . $row_study['name'] . "</td>";
-                                    } else {
-                                        echo "BLAD BAZY DANYCH.";
-                                    }
-                                    $id_student = $row_thesis['id_student'];
-                                    if ($result_student = $connect->query("SELECT * FROM user WHERE id = '$id_student'")) {
-                                        $student_count = $result_student->num_rows;
-                                        if ($student_count > 0) {
-                                            $row = $result_student->fetch_assoc();
-                                            echo "<td>" . $row['name'] . " " . $row['surname'] . "</td>";
-                                        } else {
-                                            echo "<td>Praca nie zostaøa jeszcze zarezerwowana.</td>";
+                                        while ($row_thesis = $result_thesis->fetch_assoc()) {
+                                            echo "<div class='table_padding'>";
+                                            echo "<div class='row'>";
+                                            echo "<div class='col-12 col-md-2 cell_first_element'>" . $row_thesis['title'] . "</div>";
+                                            echo "<div class='col-12 col-md-8 cell'>" . $row_thesis['description'] . "</div>";
+                                            $id_study = $row_thesis['id_study'];
+                                            if ($result_study = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'")) {
+                                                $row_study = $result_study->fetch_assoc();
+                                                echo "<div class='col-12 col-md-2 cell_last_element'>" . $row_study['name'] . "</div>";
+                                            } else {
+                                                echo "BLAD BAZY DANYCH.";
+                                            }
+                                            echo "</div></div>";
                                         }
                                     } else {
-                                        echo "BLAD BAZY DANYCH.";
+                                        echo "Brak prac dyplomowych";
                                     }
-                                    echo "</tr>";
                                 }
-                                echo "</table>";
-                            } else {
-                                echo "Brak prac dyplomowych";
                             }
+                        } else {
+                            echo "Brak prac dyplmowych.";
                         }
                     }
-                } else {
-                    echo "Brak prac dyplmowych.";
-                }
-            }
-        }
 
-        echo"<p>Witaj " . $_SESSION['email'] . '[<a href="logout.php">Wyloguj sie!</a>]</p>';
-        ?>
+                    echo "<br/>Prace dyplmowe realizowane na wydziale (zarezerwowane): </br>";
+                    if ($result = $connect->query("SELECT * FROM user WHERE id_department = '$id'")) {
+                        if ($user_count > 0) {
+                            while ($row = $result->fetch_assoc()) {
+
+                                $id_teacher = $row['id'];
+                                if ($result_thesis = $connect->query("SELECT * FROM thesis WHERE id_teacher = '$id_teacher' AND status = 1 ")) {
+                                    $thesis_count = $result->num_rows;
+                                    if ($thesis_count > 0) {
+                                        while ($row_thesis = $result_thesis->fetch_assoc()) {
+                                            echo "<div class='row'>";
+                                            echo "<div class='col-12 col-md-2 cell_first_element'>" . $row_thesis['title'] . "</div>";
+                                            echo "<div class='col-12 col-md-6 cell'>" . $row_thesis['description'] . "</div>";
+                                            $id_study = $row_thesis['id_study'];
+                                            if ($result_study = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'")) {
+                                                $row_study = $result_study->fetch_assoc();
+                                                echo "<div class='col-12 col-md-2 cell'>" . $row_study['name'] . "</div>";
+                                            } else {
+                                                echo "BLAD BAZY DANYCH.";
+                                            }
+                                            $id_student = $row_thesis['id_student'];
+                                            if ($result_student = $connect->query("SELECT * FROM user WHERE id = '$id_student'")) {
+                                                $student_count = $result_student->num_rows;
+                                                if ($student_count > 0) {
+                                                    $row = $result_student->fetch_assoc();
+                                                    echo "<div class='col-12 col-md-2 cell_last_element'>" . $row['name'] . " " . $row['surname'] . "</div>";
+                                                } else {
+                                                    echo "<td>Praca nie zostaøa jeszcze zarezerwowana.</td>";
+                                                }
+                                            } else {
+                                                echo "BLAD BAZY DANYCH.";
+                                            }
+                                            echo "</div></div>";
+                                        }
+                                    } else {
+                                        echo "Brak prac dyplomowych";
+                                    }
+                                }
+                            }
+                        } else {
+                            echo "Brak prac dyplmowych.";
+                        }
+                    }
+                }
+                ?>
+            </div>
+        </div>
     </body>
 </html>
