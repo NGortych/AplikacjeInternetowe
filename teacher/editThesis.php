@@ -169,7 +169,13 @@ if (filter_input(INPUT_GET, 'edit')) {
                     </div>
                 </form>
             </div>
+            <div class="push"></div>
         </div>
+        <footer class="footer">
+
+            &copy; 2018 Aplikacje Internetowe 
+
+        </footer>
     </body>
 </html>
 

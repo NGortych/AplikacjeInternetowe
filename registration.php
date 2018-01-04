@@ -359,8 +359,14 @@ if (isset($_POST['email_reg'])) {
 
                     <div style="clear:both;"></div>
                 </form>
+                <div class="push"></div>
             </div>
         </div>
+        <footer class="footer">
+
+            &copy; 2018 Aplikacje Internetowe 
+
+        </footer>
     </body>
 </html>
 

@@ -81,6 +81,13 @@ if (!isset($_SESSION['online'])) {
         <br/>
         <a href="myThesis.php"> Moja praca. </a> <br/>
         <a href="../logout.php">Wyloguj sie!</a>
+
+        <footer class="footer">
+
+            &copy; 2018 Aplikacje Internetowe 
+
+        </footer>
+
     </body>
 
 

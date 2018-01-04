@@ -70,8 +70,8 @@ if (filter_input(INPUT_GET, 'id')) {
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto menu">
-                            <li class="nav-item"><a href="myThesis.php">STRONA GŁÓWNA</a></li>
-                            <li class="nav-item"><a href="#">DODAJ PRACE</a></li>
+                            <li class="nav-item"><a href="../teacher/myThesis.php">STRONA GŁÓWNA</a></li>
+                            <li class="nav-item"><a href="../teacher/addThesis.php">DODAJ PRACE</a></li>
                             <li class="nav-item"><a href="../department/departmentPage.php?id=<?php echo $_SESSION['department_id'] ?>">WYDZIAŁ</a></li>
                         </ul>
                     </div>
@@ -111,7 +111,7 @@ if (filter_input(INPUT_GET, 'id')) {
                                     $id_teacher = $row_thesis['id_teacher'];
                                     if ($result = $connect->query("SELECT * FROM user WHERE id = '$id_teacher'")) {
                                         $row = $result->fetch_assoc();
-                                        echo "<div class='col-12 col-md-2 cell_last_element'>" . $row['name'] . " " . $row['surname'] . "</div>";
+                                        echo "<div class='col-12 col-md-2 cell_last_element'>" ."<a href = '../user/userPage.php?id=".$row['id']."'>". $row['name'] . " " . $row['surname'] . "</a></div>";
                                     } else {
                                         echo "BLAD BAZY DANYCH.";
                                     }
@@ -147,9 +147,9 @@ if (filter_input(INPUT_GET, 'id')) {
                                         $student_count = $result_student->num_rows;
                                         if ($student_count > 0) {
                                             $row = $result_student->fetch_assoc();
-                                            echo "<div class='col-12 col-md-2 cell_last_element'>" . $row['name'] . " " . $row['surname'] . "</div>";
+                                            echo "<div class='col-12 col-md-2 cell_last_element'>" ."<a href = '../user/userPage.php?id=".$row['id']."'>". $row['name'] . " " . $row['surname'] . "</a></div>";
                                         } else {
-                                            echo "<div class='col-12 col-md-2 cell_last_element'>Praca nie zostaøa jeszcze zarezerwowana.</div>";
+                                            echo "<div class='col-12 col-md-2 cell_last_element'>Praca nie została jeszcze zarezerwowana.</div>";
                                         }
                                     } else {
                                         echo "BLAD BAZY DANYCH.";
@@ -169,5 +169,10 @@ if (filter_input(INPUT_GET, 'id')) {
                 ?>
             </div>
         </div>
+        <footer class="footer">
+
+            &copy; 2018 Aplikacje Internetowe 
+
+        </footer>
     </body>
 </html>

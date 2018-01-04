@@ -25,7 +25,7 @@ if (filter_input(INPUT_GET, 'reserve')) {
         $id_student = $_SESSION['id'];
         if ($connect->query("UPDATE thesis SET status=1, id_student ='$_SESSION[id]' WHERE id_thesis='$_GET[reserve]' ")) {
             $resultTeacherId = $connect->query("SELECT * FROM thesis WHERE id_thesis = '$_GET[reserve]'");
-            $rowTeacherId = $resultTeacherId ->fetch_assoc();
+            $rowTeacherId = $resultTeacherId->fetch_assoc();
             $id_teacher = $rowTeacherId['id_teacher'];
             $resultTeacherEmail = $connect->query("SELECT * FROM user WHERE id = '$id_teacher'");
             $rowTeacherEmail = $resultTeacherEmail->fetch_assoc();
@@ -34,7 +34,7 @@ if (filter_input(INPUT_GET, 'reserve')) {
             $headers .= "Content-type: text/html; charset=iso-8859-2\r\n";
             $content = "Status jednej z twoich prac uległ zmianie.";
             mail($email, "Zmiana statusu pracy.", $content, $headers);
-            $_SESSION['myThesisStatus'] = 1 ;
+            $_SESSION['myThesisStatus'] = 1;
         } else {
             echo "Błąd połączenia z bazą danych.";
         }
@@ -89,7 +89,11 @@ if (filter_input(INPUT_GET, 'reserve')) {
         <a href="thesis.php"> Pokaz dostepne prace </a> <br/>
 
         <a href="../logout.php">Wyloguj sie!</a>
+        <footer class="footer">
 
+            &copy; 2018 Aplikacje Internetowe 
+
+        </footer>
     </body>
 
 

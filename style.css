@@ -3,6 +3,12 @@ body
     background-color: #CBDBD7;
     color: #FCFFF5;
     font-size: 17px;
+    height: 100%;
+}
+
+html
+{
+    height: 100%;
 }
 
 h1.logo
@@ -18,10 +24,23 @@ a.header
     color: red;
 }
 
-select{
+select
+{
     max-width: 300px;
     color: #FCFFF5;
     font-size: 17px;
+}
+
+footer
+{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.push
+{
+    height: 50px;
 }
 
 textarea.half-screen
@@ -56,13 +75,32 @@ textarea.half-screen
     }
 }
 
+@media only screen and (max-width: 768px)
+{
+    p.head_banner
+    {
+        display: none;
+    }
+
+    #logo_right
+    {
+        padding-left: 40px;      
+        padding-top: 10px;
+    }
+}
+
 @media only screen and (min-width: 576px){
     h1.logo{font-size:60px;}
 
     .menu > li
     {
-
         border-right: 0px dashed #CBDBD7;
+    }
+
+    #logo_right
+    {
+        text-align: left;
+        padding-left: 20px;      
     }
 
 }
@@ -101,15 +139,21 @@ textarea.half-screen
     {
         border-left: 1px dashed #CBDBD7;
     }
+
+    #logo_right
+    {
+        text-align: right;
+        padding-top: 5px;
+        padding-right: 40px;
+    }
 }
 
 #container
 {
     background-color: #91AAB4;
     max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 15px;
+    min-height: 100%;
+    margin: 0 auto -50px;
 }
 
 #main_page
@@ -135,20 +179,7 @@ textarea.half-screen
     float: left;
 }
 
-#logo_left
-{
-    float: left;
-    width: 80%;
-}
 
-#logo_right
-{
-    float: left;
-    width: 20%;
-    text-align: right;
-    padding-right: 5px;
-    padding-top: 5px;
-}
 
 #topnav
 {
@@ -301,12 +332,12 @@ textarea.half-screen
     color: #193441;
     min-width: 130px;
     border-radius: 5px;
-    
+
 }
 
 .btn_edit_remove:hover
 {
-    
+
     color: #CBDBD7;
     background-color: #193441;
     cursor: pointer;

@@ -145,7 +145,13 @@ if (isset($_POST['title'])) {
                     </div>
                 </form>
             </div>
+            <div class="push"></div>
         </div>
+        <footer class="footer">
+
+            &copy; 2018 Aplikacje Internetowe 
+
+        </footer>
     </body>
 </html>
 

@@ -43,20 +43,24 @@ if (filter_input(INPUT_GET, 'del')) {
         <div id="container">
 
             <header>
+                <div class='row'>
 
-                <div id="logo_left">
-                    <h1 class="logo"> Moje prace</h1>
-                </div>
-                <div id="logo_right">
-                    <?php
-                    echo $_SESSION['name'] . ' ' . $_SESSION['surname'] . "<br/>";
-                    echo $_SESSION['type'];
-                    ?>
-                    <br/>
-                    <a class="header" href="../logout.php">Wyloguj sie!</a>
+                    <div class='col-12 col-md-3 flex-md-last' id="logo_right">
+                        <p class="head_banner">
+                            <?php
+                            echo $_SESSION['name'] . ' ' . $_SESSION['surname'] . "<br/>";
+                            echo $_SESSION['type'];
+                            ?>
+                        </p>
+
+                        <a class="header" href="../logout.php">Wyloguj sie!</a>
+                    </div>
+                    <div class='col-12 col-md-9 '>
+                        <h1 class="logo"> Moje prace</h1>
+                    </div>
 
                 </div>
-                <div style="clear:both;"></div>
+
                 <nav class="navbar navbar-toggleable-sm navbar-light bg-faded" id="topnav">
 
                     <button class="navbar-toggler navbar-toggler-right menu_button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +106,7 @@ if (filter_input(INPUT_GET, 'del')) {
                                 $id_student = $row['id_student'];
                                 if ($result = $connect->query("SELECT * FROM user WHERE id = '$id_student'")) {
                                     $row = $result->fetch_assoc();
-                                    echo "<div class='col-12 col-md-2 cell_last_element'>" . $row['name'] . " " . $row['surname'] . "</div>";
+                                    echo "<div class='col-12 col-md-2 cell_last_element'>" . "<a href = '../user/userPage.php?id=" . $row['id'] . "'>" . $row['name'] . " " . $row['surname'] . "</a></div>";
                                 } else {
                                     echo "BLAD BAZY DANYCH.";
                                 }
@@ -147,6 +151,14 @@ if (filter_input(INPUT_GET, 'del')) {
                 }
                 ?>
             </div>
+           <div class="push"></div>
+
         </div>
+        <footer class="footer">
+
+            &copy; 2018 Aplikacje Internetowe 
+
+        </footer>
+
     </body>
 </html>

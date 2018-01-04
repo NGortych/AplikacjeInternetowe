@@ -98,7 +98,7 @@ if (filter_input(INPUT_GET, 'id')) {
                         $user_count = $result->num_rows;
                         if ($user_count > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                echo " - " . $row['name'] . " " . $row['surname'] . " <br/>";
+                                echo " - " . "<a href = '../user/userPage.php?id=" . $row['id'] . "'>" . $row['name'] . " " . $row['surname'] . "</a> <br/>";
                             }
                         } else {
                             echo "W skład wydziału nie wchodzi żaden nauczyciel.";
@@ -163,7 +163,7 @@ if (filter_input(INPUT_GET, 'id')) {
                                                 $student_count = $result_student->num_rows;
                                                 if ($student_count > 0) {
                                                     $row = $result_student->fetch_assoc();
-                                                    echo "<div class='col-12 col-md-2 cell_last_element'>" . $row['name'] . " " . $row['surname'] . "</div>";
+                                                    echo "<div class='col-12 col-md-2 cell_last_element'>" . "<a href = '../user/userPage.php?id=" . $row['id'] . "'>" . $row['name'] . " " . $row['surname'] . "</a></div>";
                                                 } else {
                                                     echo "<td>Praca nie zostaøa jeszcze zarezerwowana.</td>";
                                                 }
@@ -183,7 +183,15 @@ if (filter_input(INPUT_GET, 'id')) {
                     }
                 }
                 ?>
+
+                <div class="push"></div>
             </div>
         </div>
+        <footer class="footer">
+
+            &copy; 2018 Aplikacje Internetowe 
+
+        </footer>
     </body>
+
 </html>
