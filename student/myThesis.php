@@ -52,48 +52,91 @@ if (filter_input(INPUT_GET, 'reserve')) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <title>Moja Praca Dyplomowa</title>
 
+
+        <link href="../css/bootstrap.min.css" rel="stylesheet" >
+        <link href="../style.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+
+
     </head>
     <body>
-        <?php
-        require_once '../connect.php';
-        $connect = @new mysqli($host, $db_user, $db_password, $db_name);
 
-        if ($connect->connect_errno != 0) {
-            echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
-        } else {
-            echo "Moja praca dyplomowa: </br>";
-            $id = $_SESSION['id'];
-            if ($result = $connect->query("SELECT * FROM thesis WHERE id_student = '$id'")) {
-                $thesis_count = $result->num_rows;
-                if ($thesis_count > 0) {
-                    $row = $result->fetch_assoc();
-                    echo "<table cellpadding=\"2\" border=1>";
-                    echo "<tr>";
-                    echo "<td>" . $row['title'] . "</td>";
-                    echo "<td>" . $row['description'] . "</td>";
-                    $id_teacher = $row['id_teacher'];
-                    if ($result = $connect->query("SELECT * FROM user WHERE id = '$id_teacher'")) {
-                        $row = $result->fetch_assoc();
-                        echo "<td>" . $row['name'] . " " . $row['surname'] . "</td>";
-                    } else {
-                        echo "BLAD BAZY DANYCH.";
+        <div id="container">
+
+            <header>
+                <div class='row'>
+
+                    <div class='col-12 col-md-3 flex-md-last' id="logo_right">
+                        <p class="head_banner">
+                            <?php
+                            echo $_SESSION['name'] . ' ' . $_SESSION['surname'] . "<br/>";
+                            echo $_SESSION['type'];
+                            ?>
+                        </p>
+
+                        <a class="header" href="../logout.php">Wyloguj sie!</a>
+                    </div>
+                    <div class='col-12 col-md-9 '>
+                        <h1 class="logo"> Moja praca</h1>
+                    </div>
+
+                </div>
+
+                <nav class="navbar navbar-toggleable-sm navbar-light bg-faded" id="topnav">
+
+                    <button class="navbar-toggler navbar-toggler-right menu_button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto menu">
+                            <li class="nav-item"><a href="#">MOJA PRACA</a></li>
+                            <li class="nav-item"><a href="thesis.php">DOSTĘPNE PRACE</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <div id="teacher_page">
+                <?php
+                require_once '../connect.php';
+                $connect = @new mysqli($host, $db_user, $db_password, $db_name);
+
+                if ($connect->connect_errno != 0) {
+                    echo "Błąd połączeniea z bazą. Spróbuj ponownie później";
+                } else {
+
+                    $id = $_SESSION['id'];
+                    if ($result = $connect->query("SELECT * FROM thesis WHERE id_student = '$id'")) {
+                        $thesis_count = $result->num_rows;
+                        if ($thesis_count > 0) {
+                            $row = $result->fetch_assoc();
+
+                            $id_teacher = $row['id_teacher'];
+                            if ($result = $connect->query("SELECT * FROM user WHERE id = '$id_teacher'")) {
+                                $row2 = $result->fetch_assoc();
+                                echo "<h5>PROMOTOR:     </h5><h3>" . "<a href = '../user/userPage.php?id=" . $row['id_teacher'] . "'>" . $row2['name'] . " " . $row2['surname'] . "</a></h3><br/>";
+                            } else {
+                                echo "BLAD BAZY DANYCH.";
+                            }
+                            echo "<h5>TYTUŁ:        </h5><h3>" . $row['title'] . "</h3><br/>";
+                            echo "<h5>OPIS:     </h5><p>" . $row['description'] . "</p>";
+                        } else
+                            echo "NIE WYBRANO JESZCZE ŻADNEJ PRACY DYPLOMOWEJ.";
                     }
-                    echo "</tr>";
-                    echo "</table>";
-                } else
-                    echo "NIE WYBRANO JESZCZE ŻADNEJ PRACY DYPLOMOWEJ.";
-            }
-        }
-        ?>
-        <br/>
-        <a href="thesis.php"> Pokaz dostepne prace </a> <br/>
+                }
+                ?>
+            </div>
+            <div class="push"></div>
+        </div>
 
-        <a href="../logout.php">Wyloguj sie!</a>
         <footer class="footer">
 
             &copy; 2018 Aplikacje Internetowe 
 
         </footer>
+
     </body>
 
 
