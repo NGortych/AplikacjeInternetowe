@@ -76,10 +76,16 @@ if (filter_input(INPUT_GET, 'id')) {
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto menu">
-                            <li class="nav-item"><a href="../teacher/myThesis.php">STRONA GŁÓWNA</a></li>
-                            <li class="nav-item"><a href="../teacher/addThesis.php">DODAJ PRACE</a></li>
-                            <li class="nav-item"><a href="../department/departmentPage.php?id=<?php echo $_SESSION['department_id'] ?>">WYDZIAŁ</a></li>
-                        </ul>
+                            <?php if ($_SESSION['type'] === "Nauczyciel") { ?>
+                                <li class="nav-item"><a href="../teacher/myThesis.php">STRONA GŁÓWNA</a></li>
+                                <li class="nav-item"><a href="../teacher/addThesis.php">DODAJ PRACE</a></li>
+                                <li class="nav-item"><a href="../department/departmentPage.php?id=<?php echo $_SESSION['department_id'] ?>">WYDZIAŁ</a></li>
+                                <?php
+                            } elseif ($_SESSION['type'] === "Student") {
+                                ?>
+                                <li class="nav-item"><a href="../student/myThesis.php">MOJA PRACA</a></li>
+                                <li class="nav-item"><a href="../student/thesis.php">DOSTĘPNE PRACE</a></li>
+                            <?php } ?>        </ul>
                     </div>
                 </nav>
             </header>
@@ -154,6 +160,8 @@ if (filter_input(INPUT_GET, 'id')) {
                                         if ($student_count > 0) {
                                             $row = $result_student->fetch_assoc();
                                             echo "<div class='col-12 col-md-2 cell_last_element'>" . "<a href = '../user/userPage.php?id=" . $row['id'] . "'>" . $row['name'] . " " . $row['surname'] . "</a></div>";
+                                        } elseif ($_SESSION['type'] == "Student" && $row_study['id_study'] == $_SESSION['study_id'] && $_SESSION['myThesisStatus'] == 0) {
+                                            echo "<div class='col-12 col-md-2 cell_last_element'>" . "<a href='../student/myThesis.php?reserve=" . $row_thesis['id_thesis'] . "'>REZERWUJ</a>  </div>";
                                         } else {
                                             echo "<div class='col-12 col-md-2 cell_last_element'>Praca nie została jeszcze zarezerwowana.</div>";
                                         }

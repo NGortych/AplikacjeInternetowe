@@ -46,7 +46,7 @@ if (filter_input(INPUT_GET, 'id')) {
         <div id="container">
 
             <header>
-                <div class='row'>
+                <div class='row' >
 
                     <div class='col-12 col-md-3 flex-md-last' id="logo_right">
                         <p class="head_banner">
@@ -75,9 +75,16 @@ if (filter_input(INPUT_GET, 'id')) {
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto menu">
-                            <li class="nav-item"><a href="../teacher/myThesis.php">STRONA GŁÓWNA</a></li>
-                            <li class="nav-item"><a href="../teacher/addThesis.php">DODAJ PRACE</a></li>
-                            <li class="nav-item"><a href="#">WYDZIAŁ</a></li>
+                            <?php if ($_SESSION['type'] === "Nauczyciel") { ?>
+                                <li class="nav-item"><a href="../teacher/myThesis.php">STRONA GŁÓWNA</a></li>
+                                <li class="nav-item"><a href="../teacher/addThesis.php">DODAJ PRACE</a></li>
+                                <li class="nav-item"><a href="../department/departmentPage.php?id=<?php echo $_SESSION['department_id'] ?>">WYDZIAŁ</a></li>
+                                <?php
+                            } elseif ($_SESSION['type'] === "Student") {
+                                ?>
+                                <li class="nav-item"><a href="../student/myThesis.php">MOJA PRACA</a></li>
+                                <li class="nav-item"><a href="../student/thesis.php">DOSTĘPNE PRACE</a></li>
+                            <?php } ?>
                         </ul>
                     </div>
                 </nav>
@@ -125,14 +132,28 @@ if (filter_input(INPUT_GET, 'id')) {
                                             echo "<div class='table_padding'>";
                                             echo "<div class='row'>";
                                             echo "<div class='col-12 col-md-2 cell_first_element'>" . $row_thesis['title'] . "</div>";
-                                            echo "<div class='col-12 col-md-8 cell'>" . $row_thesis['description'] . "</div>";
+                                            echo "<div class='col-12 col-md-4 cell' style='max-height: 250px; overflow: auto'>" . $row_thesis['description'] . "</div>";
+
                                             $id_study = $row_thesis['id_study'];
                                             if ($result_study = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'")) {
                                                 $row_study = $result_study->fetch_assoc();
-                                                echo "<div class='col-12 col-md-2 cell_last_element'>" . $row_study['name'] . "</div>";
+                                                echo "<div class='col-12 col-md-2 cell'>" . $row_study['name'] . "</div>";
                                             } else {
                                                 echo "BLAD BAZY DANYCH.";
                                             }
+                                            $id_teacher = $row_thesis['id_teacher'];
+                                            if ($result_teacher = $connect->query("SELECT * FROM user WHERE id = '$id_teacher'")) {
+                                                $row_teacher = $result_teacher->fetch_assoc();
+                                                echo "<div class='col-12 col-md-2 cell'>" . "<a href = '../user/userPage.php?id=" . $row_teacher['id'] . "'>" . $row_teacher['name'] . " " . $row_teacher['surname'] . "</a></div>";
+                                            } else {
+                                                echo "BLAD BAZY DANYCH.";
+                                            }
+                                            if ($_SESSION['type'] == "Student" && $row_study['id_study'] == $_SESSION['study_id'] && $_SESSION['myThesisStatus'] == 0) {
+                                                echo "<div class='col-12 col-md-2 cell_last_element'>" . "<a href='../student/myThesis.php?reserve=" . $row_thesis['id_thesis'] . "'>REZERWUJ</a>  </div>";
+                                            } else {
+                                                echo "<div class='col-12 col-md-2 cell_last_element'>Praca nie została jeszcze zarezerwowana.</div>";
+                                            }
+
                                             echo "</div></div>";
                                         }
                                     } else {
@@ -157,11 +178,18 @@ if (filter_input(INPUT_GET, 'id')) {
                                         while ($row_thesis = $result_thesis->fetch_assoc()) {
                                             echo "<div class='row'>";
                                             echo "<div class='col-12 col-md-2 cell_first_element'>" . $row_thesis['title'] . "</div>";
-                                            echo "<div class='col-12 col-md-6 cell'>" . $row_thesis['description'] . "</div>";
+                                            echo "<div class='col-12 col-md-4 cell' style='max-height: 250px; overflow: auto;'> " . $row_thesis['description'] . "</div>";
                                             $id_study = $row_thesis['id_study'];
                                             if ($result_study = $connect->query("SELECT * FROM study WHERE id_study = '$id_study'")) {
                                                 $row_study = $result_study->fetch_assoc();
                                                 echo "<div class='col-12 col-md-2 cell'>" . $row_study['name'] . "</div>";
+                                            } else {
+                                                echo "BLAD BAZY DANYCH.";
+                                            }
+                                            $id_teacher = $row_thesis['id_teacher'];
+                                            if ($result_teacher = $connect->query("SELECT * FROM user WHERE id = '$id_teacher'")) {
+                                                $row_teacher = $result_teacher->fetch_assoc();
+                                                echo "<div class='col-12 col-md-2 cell'>" . "<a href = '../user/userPage.php?id=" . $row_teacher['id'] . "'>" . $row_teacher['name'] . " " . $row_teacher['surname'] . "</a></div>";
                                             } else {
                                                 echo "BLAD BAZY DANYCH.";
                                             }
