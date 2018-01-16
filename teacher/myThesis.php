@@ -36,6 +36,13 @@ if (filter_input(INPUT_GET, 'del')) {
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
         <script src="../js/bootstrap.min.js"></script>
+        <script src="../js.js"></script>
+        
+        <script type="text/javascript">
+    $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+</script>
 
     </head>
     <body>
@@ -104,9 +111,9 @@ if (filter_input(INPUT_GET, 'del')) {
                                     echo "BLAD BAZY DANYCH.";
                                 }
                                 $id_student = $row['id_student'];
-                                if ($result = $connect->query("SELECT * FROM user WHERE id = '$id_student'")) {
-                                    $row = $result->fetch_assoc();
-                                    echo "<div class='col-12 col-md-2 cell_last_element'>" . "<a href = '../user/userPage.php?id=" . $row['id'] . "'>" . $row['name'] . " " . $row['surname'] . "</a></div>";
+                                if ($result_student = $connect->query("SELECT * FROM user WHERE id = '$id_student'")) {
+                                    $row_student = $result_student->fetch_assoc();
+                                    echo "<div class='col-12 col-md-2 cell_last_element'>" . "<a href = '../user/userPage.php?id=" . $row_student['id'] . "'>" . $row_student['name'] . " " . $row_student['surname'] . "</a></div>";
                                 } else {
                                     echo "BLAD BAZY DANYCH.";
                                 }
@@ -138,7 +145,7 @@ if (filter_input(INPUT_GET, 'del')) {
                                 }
                                 echo "<div class='col-12 col-md-2'>";
                                 echo "<a href = 'editThesis.php?edit=" . $row['id_thesis'] . "'> <input type='submit' value='Edytuj' class='btn_edit_remove'/></a>";
-                                echo "<a href = 'myThesis.php?del=" . $row['id_thesis'] . "'> <input type='submit' value='Usuń' class='btn_edit_remove'/></a>";
+                                echo "<a href = 'myThesis.php?del=" . $row['id_thesis'] . "' class='confirmation'> <input type='submit' value='Usuń' class='btn_edit_remove'/></a>";
 
                                 echo "</div></div></div>";
                             }

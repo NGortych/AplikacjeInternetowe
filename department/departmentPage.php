@@ -176,6 +176,7 @@ if (filter_input(INPUT_GET, 'id')) {
                                     $thesis_count = $result->num_rows;
                                     if ($thesis_count > 0) {
                                         while ($row_thesis = $result_thesis->fetch_assoc()) {
+                                            echo "<div class='table_padding'>";
                                             echo "<div class='row'>";
                                             echo "<div class='col-12 col-md-2 cell_first_element'>" . $row_thesis['title'] . "</div>";
                                             echo "<div class='col-12 col-md-4 cell' style='max-height: 250px; overflow: auto;'> " . $row_thesis['description'] . "</div>";

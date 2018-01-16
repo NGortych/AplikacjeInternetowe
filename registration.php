@@ -102,7 +102,7 @@ if (isset($_POST['email_reg'])) {
     $imgFile = $_FILES['user_image']['name'];
     $tmp_dir = $_FILES['user_image']['tmp_name'];
     $imgSize = $_FILES['user_image']['size'];
-    $userpic = "brak-zdjecia.jpg";
+    $userpic = "123456.jpg";
 
 
     if (!empty($imgFile)) {
@@ -148,7 +148,7 @@ if (isset($_POST['email_reg'])) {
                                            <a href=\"http://localhost/test/index.php?active=" . $actCode . "\"> http://localhost/test/index.php?active=" . $actCode . " </a><br>
                                                 ";
                 mail($email, "Link Aktywacyjny", $content, $headers);
-                if ($connect->query("INSERT INTO `user`(`id`, `email`, `password`, `name`, `surname`, `type`, `indexNM`, `id_study`, `id_department`,`activation_key`, `active`, `image`) VALUES(NULL,'$email','$passwordHash','$name','$surname','$type',NULL,'$study',NULL,'$actCode',0, '$userpic')"))
+                if ($connect->query("INSERT INTO `user`(`id`, `email`, `password`, `name`, `surname`, `type`, `indexNM`, `id_study`, `id_department`,`activation_key`, `active`, `image`) VALUES(NULL,'$email','$passwordHash','$name','$surname','$type','$indexNM','$study',NULL,'$actCode',0, '$userpic')"))
                     echo "Zostałeś zarejestrowany. Na twój e-mail została wysłana wiadomość z kodem aktywayjnym.";
                 else
                     echo "REJESTRACJA NIE POWIODŁĄ SIĘ." . $connect->error;
@@ -342,7 +342,7 @@ if (isset($_POST['email_reg'])) {
                     </div>
                     <div id="reg_image">
                         <p>Zdjęcie profilowe (opcjonalnie)</p>
-                        <img id="blah" src="user_images/brak-zdjęcia.jpg" width="300" height="400" />
+                        <img id="blah" src="user_images/123456.jpg" width="300" height="400" />
                         <br/>
                         <br/>
                         <label class="btn upload_button">

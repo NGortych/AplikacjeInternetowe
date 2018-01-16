@@ -95,7 +95,7 @@ if (filter_input(INPUT_GET, 'id')) {
                 if (isset($id)) {
                     echo "<div class='row'>";
                     echo "<div class='col-12 col-md-6' id='user_image'>";
-                    echo "<img id='blah' src='../user_images/brak-zdjęcia.jpg' width='300' height='400' /></div>";
+                    echo "<img id='blah' src='../user_images/".$row['image']."' width='300' height='400' /></div>";
                     echo "<div class='col-12 col-md-6 ' id='user_info'>";
                     echo "<h2>" . $row['name'] . ' ' . $row['surname'] . "</br>";
                     echo '<h4>' . $row['email'] . '<br/>';

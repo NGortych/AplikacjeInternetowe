@@ -3,7 +3,8 @@ session_start();
 
 
 if ((isset($_SESSION['online'])) && ($_SESSION['online'] == true)) {
-    header('Location: test.php');
+    if ($_SESSION['type'] == "Nauczyciel") header('Location: teacher/myThesis.php');
+        else header('Location: student/myThesis.php');
     exit();
 }
 
