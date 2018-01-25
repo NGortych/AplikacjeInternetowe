@@ -220,7 +220,7 @@ textarea.half-screen
     color: #FCFFF5;
 }
 
-.error
+.error_reg
 {
     border: solid red;
     color:red;
@@ -341,4 +341,15 @@ textarea.half-screen
     color: #CBDBD7;
     background-color: #193441;
     cursor: pointer;
+}
+
+.profileModal
+{
+    color: #193441;
+    background-color: #CBDBD7;
+}
+
+.validate_error_class
+{
+    color: red;
 }

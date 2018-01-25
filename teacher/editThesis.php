@@ -79,6 +79,7 @@ if (filter_input(INPUT_GET, 'edit')) {
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
         <script src="../js/bootstrap.min.js"></script>
+        <script src="../js.js"></script>
     </head>
     <body>
         <div id="container">
@@ -117,7 +118,7 @@ if (filter_input(INPUT_GET, 'edit')) {
                 </nav>
             </header>
             <div>
-                <form method="post" > 
+                <form method="post" z> 
                     <div id="teacher_page">
                         <div class=" reg_fields">Tytuł pracy: <br/> <textarea name="title" class="form-control half-screen" cols="10" rows="2" ><?php echo $title; ?></textarea> </div>
                         <?php
@@ -171,16 +172,36 @@ if (filter_input(INPUT_GET, 'edit')) {
                         </div>
                         <br/>
                         <input type="submit" value="Zapisz zmiany" class="button"/>
+                        <input type="button" name="btn" value="Submit" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-default" />
                     </div>
+                     <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Confirm Submit
+                    </div>
+                    <div class="modal-body">
+                        <p style="color: red"> Wproadzić zmiany </p>
+                        <!-- We display the details entered by the user here -->
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <input type="submit" value="Zapisz zmiany" class="button"/>
+                    </div>
+                </div>
+            </div>
+        </div>
                 </form>
             </div>
             <div class="push"></div>
         </div>
-        <footer class="footer">
+       
+            <footer class="footer">
 
-            &copy; 2018 Aplikacje Internetowe 
+                &copy; 2018 Aplikacje Internetowe 
 
-        </footer>
+            </footer>
     </body>
 </html>
 

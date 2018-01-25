@@ -38,7 +38,7 @@ if (isset($_POST['email_reg'])) {
 
     //Nazwisko
     $surname = $_POST['surname_registration'];
-    if ((strlen($surname) < 3) || (strlen($surname) > 20) || !preg_match('/^[A-ZŁŚ]{1}[a-ząęśżźćń]+$/', $name)) {
+    if ((strlen($surname) < 3) || (strlen($surname) > 20) || !preg_match('/^[A-ZŁŚ]{1}[a-ząęśżźćń]+$/', $surname)) {
         $successful_validation = false;
         $_SESSION['error_surname'] = "Wprowadzone nazwisko nie jest prawidłowe.";
     }
